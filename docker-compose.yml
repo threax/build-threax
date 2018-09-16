@@ -1,0 +1,10 @@
+version: "3"
+
+#Just use this to build with docker-compose build, helps get the settings correct, dont run it that way.
+services:
+  server:
+    image: build-threax
+    container_name: build-threax
+    build:
+      context:  .
+      dockerfile: Dockerfile
