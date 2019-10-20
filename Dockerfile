@@ -21,7 +21,7 @@ RUN apt-get update &&\
 RUN apt-get update &&\
     apt-get install gnupg -y &&\
     apt-get install curl -y &&\
-    curl -sL https://deb.nodesource.com/setup_8.x | bash - &&\
+    curl -sL https://deb.nodesource.com/setup_10.x | bash - &&\
     apt-get install -y nodejs &&\
     apt-get remove --auto-remove curl -y &&\
     apt-get remove --auto-remove gnupg -y &&\
@@ -29,6 +29,8 @@ RUN apt-get update &&\
     apt-get clean
 
 # Install .Net Core
+# Note that this currently installs both 2.2 and 3.0 since bundler minifier core needs 2.x
+# https://github.com/madskristensen/BundlerMinifier/pull/443
 RUN apt-get update &&\
     apt-get install wget -y &&\
     apt-get install apt-transport-https -y &&\
@@ -36,15 +38,15 @@ RUN apt-get update &&\
     dpkg -i packages-microsoft-prod.deb &&\
     apt-get update &&\
     apt-get install dotnet-sdk-2.2 -y &&\
+    apt-get install dotnet-sdk-3.0 -y &&\
     apt-get remove --auto-remove apt-transport-https -y &&\
     apt-get remove --auto-remove wget -y &&\
     apt-get autoremove &&\
     apt-get clean
 
-# Install Yarn Packages
-RUN npm install --global yarn &&\
-    yarn global add typescript &&\
-    yarn global add threax-npm-tk
+# Install npm Packages, node-sass needs --unsafe-perm to keep the user as root when installing
+RUN npm install -g typescript
+RUN npm install -g --unsafe-perm threax-npm-tk
 
 # Install Extra Nuget Packages
 RUN mkdir dlproj &&\
