@@ -3,7 +3,7 @@ version: "3"
 #Just use this to build with docker-compose build, helps get the settings correct, dont run it that way.
 services:
   server:
-    image: threax/build/dotnet:3.0.0
+    image: threax/build-dotnet:3.0.0
     container_name: build-threax
     build:
       context:  .
