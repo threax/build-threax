@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
 #Environment
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
