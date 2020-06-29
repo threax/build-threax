@@ -29,15 +29,12 @@ RUN apt-get update &&\
     apt-get clean
 
 # Install .Net Core
-# Note that this currently installs both 2.1 and 3.1 since bundler minifier core needs 2.x
-# https://github.com/madskristensen/BundlerMinifier/pull/443
 RUN apt-get update &&\
     apt-get install wget -y &&\
     apt-get install apt-transport-https -y &&\
     wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb &&\
     dpkg -i packages-microsoft-prod.deb &&\
     apt-get update &&\
-    apt-get install dotnet-sdk-2.1 -y &&\
     apt-get install dotnet-sdk-3.1 -y &&\
     apt-get remove --auto-remove apt-transport-https -y &&\
     apt-get remove --auto-remove wget -y &&\
