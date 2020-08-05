@@ -14,9 +14,9 @@ RUN apt-get update &&\
     apt-get autoremove &&\
     apt-get clean
 
-# Install npm Packages, node-sass needs --unsafe-perm to keep the user as root when installing
-RUN npm install -g typescript
-RUN npm install -g --unsafe-perm threax-npm-tk
+RUN npm install -g typescript &&\
+    npm install -g sass &&\
+    npm install -g threax-npm-tk
 
 # Install Extra Nuget Packages
 RUN mkdir dlproj &&\
