@@ -1,0 +1,51 @@
+FROM ubuntu:20.04
+
+#Environment
+ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
+
+# Install Node
+RUN apt-get update &&\
+    apt-get install gnupg -y &&\
+    apt-get install curl -y &&\
+    curl -sL https://deb.nodesource.com/setup_10.x | bash - &&\
+    apt-get install -y nodejs &&\
+    apt-get remove --auto-remove curl -y &&\
+    apt-get remove --auto-remove gnupg -y &&\
+    apt-get autoremove &&\
+    apt-get clean
+
+# Install .Net Core, make this a 1 liner
+RUN curl -SL -o dotnet.tar.gz https://download.visualstudio.microsoft.com/download/pr/5ee48114-19bf-4a28-89b6-37cab15ec3f2/f5d1f54ca93ceb8be7d8e37029c8e0f2/dotnet-sdk-3.1.302-linux-arm64.tar.gz
+RUN mkdir -p /usr/share/dotnet
+RUN tar -zxf dotnet.tar.gz -C /usr/share/dotnet
+RUN ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
+
+# Install npm Packages, node-sass needs --unsafe-perm to keep the user as root when installing
+RUN npm install -g typescript
+RUN npm install -g --unsafe-perm threax-npm-tk
+
+# Install Extra Nuget Packages
+RUN mkdir dlproj &&\
+    cd /dlproj &&\
+    dotnet new console &&\
+    dotnet add dlproj.csproj package Threax.AspNetCore.Halcyon.Ext &&\
+    dotnet add dlproj.csproj package Threax.AspNetCore.CSP &&\
+    dotnet add dlproj.csproj package Threax.AspNetCore.BuiltInTools &&\
+    dotnet add dlproj.csproj package Threax.AspNetCore.Tracking &&\
+    dotnet add dlproj.csproj package Threax.AspNetCore.Models &&\
+    dotnet add dlproj.csproj package Threax.AspNetCore.IdServerMetadata.Client &&\
+    dotnet add dlproj.csproj package Threax.AspNetCore.AuthCore &&\
+    dotnet add dlproj.csproj package Threax.AspNetCore.Xsrf &&\
+    dotnet add dlproj.csproj package Threax.ReflectedServices &&\
+    dotnet add dlproj.csproj package Threax.Tests &&\
+    dotnet add dlproj.csproj package Threax.AspNetCore.UserBuilder &&\
+    dotnet add dlproj.csproj package Threax.AspNetCore.UserBuilder.Entities &&\
+    dotnet add dlproj.csproj package Threax.AspNetCore.UserBuilder.Entities.Mvc &&\
+    dotnet add dlproj.csproj package Threax.AspNetCore.ExceptionFilter &&\
+    dotnet add dlproj.csproj package Threax.AspNetCore.CorsManager &&\
+    dotnet add dlproj.csproj package Threax.AspNetCore.Validators &&\
+    dotnet add dlproj.csproj package Threax.AspNetCore.FileRepository &&\
+    dotnet add dlproj.csproj package Threax.Extensions.Configuration.SchemaBinder &&\
+    dotnet add dlproj.csproj package Threax.SharedHttpClient &&\
+    cd .. &&\
+    rm -r dlproj
