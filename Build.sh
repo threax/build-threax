@@ -9,4 +9,4 @@ while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symli
 done
 scriptPath="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
 
-docker build --pull -t threax/build-dotnet:3.1.0 $scriptPath
+docker build --pull -t threax/build-dotnet:5.0 $scriptPath
