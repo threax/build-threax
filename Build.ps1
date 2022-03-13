@@ -1,3 +1,7 @@
 $scriptPath = Split-Path $script:MyInvocation.MyCommand.Path
 
-docker build -t threax/build-dotnet:5.0 $scriptPath
+Push-Location $scriptPath
+
+wsl sudo docker build -t threax/build-dotnet:6.0 .
+
+Pop-Location
